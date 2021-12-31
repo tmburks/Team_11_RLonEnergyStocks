@@ -16,6 +16,7 @@ from gym.spaces import Discrete, Box
 import random
 from EXPE import StockTradingEnv_EXPE
 from _APA import StockTradingEnv_APA
+from _KMI import StockTradingEnv_KMI
 
 def build_model(states, actions):
     model = Sequential()
