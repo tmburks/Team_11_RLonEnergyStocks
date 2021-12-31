@@ -31,7 +31,7 @@ class StockTradingEnv_KMI(Env):
         super(StockTradingEnv, self).__init__()
         self.SetStartDate(2011, 12, 30)
         self.SetEndDate(2021, 12, 30)
-        self.init_cash = self.SetCash(100000)
+        self.init_cash = self.SetCash(100000000/3)
         self.symbol = self.AddEquity("KMI", Resolution.Daily).Symbol
         df = self.History(self.symbol, self.SetStartDate, self.SetEndDate, Resolution.Daily)
         self.df = df.sort_values('Date')
@@ -60,6 +60,7 @@ class StockTradingEnv_KMI(Env):
     def _take_action(self, action):
         # Set the current price to a random price within the time step
         current_price = random.uniform(self.df.loc[self.current_step, "Open"], self.df.loc[self.current_step, "Close"])
+        current_date = self.df.loc[self.current_step, "Date"]
         price_history.append(current_price)
         price_history_neg.append(-current_price)
         action_type = np.floor(action / 100)
@@ -78,7 +79,8 @@ class StockTradingEnv_KMI(Env):
         if (self.current_step - 1) in lows:
             total_possible = self.balance / current_price
             shares_bought = np.floor(total_possible * 1)
-            self.Buy(self.symbol, shares_bought)
+            if current_date == Today:
+                self.Buy(self.symbol, shares_bought)
             prev_cost = self.cost_basis * self.shares_held
             additional_cost = shares_bought * current_price
             self.balance -= additional_cost
@@ -89,7 +91,8 @@ class StockTradingEnv_KMI(Env):
         elif (self.current_step - 1) in peaks:
             # Sell amount % of shares held
             shares_sold = np.floor(self.shares_held * 1)
-            self.Sell(self.symbol, shares_sold)
+            if current_date == Today:
+                self.Sell(self.symbol, shares_sold)
             self.balance += shares_sold * current_price
             self.shares_held -= shares_sold
             self.total_shares_sold += shares_sold
@@ -101,7 +104,8 @@ class StockTradingEnv_KMI(Env):
                 # Buy amount % of balance in shares
                 total_possible = self.balance / current_price
                 shares_bought = np.floor(total_possible * amount)
-                self.Buy(self.symbol, shares_bought)
+                if current_date == Today:
+                    self.Buy(self.symbol, shares_bought)
                 prev_cost = self.cost_basis * self.shares_held
                 additional_cost = shares_bought * current_price
                 self.balance -= additional_cost
@@ -111,7 +115,8 @@ class StockTradingEnv_KMI(Env):
             elif action_type == 0:
                 # Sell amount % of shares held
                 shares_sold = np.floor(self.shares_held * amount)
-                self.Sell(self.symbol, shares_sold)
+                if current_date == Today:
+                    self.Sell(self.symbol, shares_sold)
                 self.balance += shares_sold * current_price
                 self.shares_held -= shares_sold
                 self.total_shares_sold += shares_sold
