@@ -31,7 +31,7 @@ class StockTradingEnv_APA(Env):
         super(StockTradingEnv, self).__init__()
         self.SetStartDate(2011, 12, 30)
         self.SetEndDate(2021, 12, 30)
-        self.init_cash = self.SetCash(100000)
+        self.init_cash = self.SetCash(100000000/3)
         self.symbol = self.AddEquity("APA", Resolution.Daily).Symbol
         df = self.History(self.symbol, self.SetStartDate, self.SetEndDate, Resolution.Daily)
         self.df = df.sort_values('Date')
