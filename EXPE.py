@@ -31,7 +31,7 @@ class StockTradingEnv_EXPE(Env):
         super(StockTradingEnv, self).__init__()
         self.SetStartDate(2011, 12, 30)
         self.SetEndDate(Today)
-        self.init_cash = self.SetCash(100000)
+        self.init_cash = self.SetCash(100000000/3)
         self.symbol = self.AddEquity("EXPE", Resolution.Daily).Symbol
         df = self.History(self.symbol, self.SetStartDate, self.SetEndDate, Resolution.Daily)
         self.df = df.sort_values('Date')
