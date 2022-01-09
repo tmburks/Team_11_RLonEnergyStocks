@@ -28,7 +28,7 @@ price_history_neg = []
 
 class StockTradingEnv_KMI(Env):
     def __init__(self):
-        super(StockTradingEnv, self).__init__()
+        super(StockTradingEnv_KMI, self).__init__()
         self.SetStartDate(2011, 12, 30)
         self.SetEndDate(2021, 12, 30)
         self.init_cash = self.SetCash(100000000/3)
