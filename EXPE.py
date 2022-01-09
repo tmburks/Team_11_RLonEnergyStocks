@@ -28,7 +28,7 @@ price_history_neg = []
 
 class StockTradingEnv_EXPE(Env):
     def __init__(self):
-        super(StockTradingEnv, self).__init__()
+        super(StockTradingEnv_EXPE, self).__init__()
         self.SetStartDate(2011, 12, 30)
         self.SetEndDate(Today)
         self.init_cash = self.SetCash(100000000/3)
