@@ -26,11 +26,11 @@ price_history = []
 price_history_neg = []
 
 
-class StockTradingEnv_EXPE(Env):
+class StockTradingEnv_EXPE(QCAlgorithm):
     def __init__(self):
         super(StockTradingEnv_EXPE, self).__init__()
         self.SetStartDate(2011, 12, 30)
-        self.SetEndDate(Today)
+        self.SetEndDate(2021, 12, 30)
         self.init_cash = self.SetCash(100000000/3)
         self.symbol = self.AddEquity("EXPE", Resolution.Daily).Symbol
         df = self.History(self.symbol, self.SetStartDate, self.SetEndDate, Resolution.Daily)
@@ -79,8 +79,8 @@ class StockTradingEnv_EXPE(Env):
         if (self.current_step - 1) in lows:
             total_possible = self.balance / current_price
             shares_bought = np.floor(total_possible * 1)
-            if current_date == Today:
-                self.Buy(self.symbol, shares_bought)
+            #if current_date == Today:
+            self.Buy(self.symbol, shares_bought)
             prev_cost = self.cost_basis * self.shares_held
             additional_cost = shares_bought * current_price
             self.balance -= additional_cost
@@ -91,8 +91,8 @@ class StockTradingEnv_EXPE(Env):
         elif (self.current_step - 1) in peaks:
             # Sell amount % of shares held
             shares_sold = np.floor(self.shares_held * 1)
-            if current_date == Today:
-                self.Sell(self.symbol, shares_sold)
+            #if current_date == Today:
+            self.Sell(self.symbol, shares_sold)
             self.balance += shares_sold * current_price
             self.shares_held -= shares_sold
             self.total_shares_sold += shares_sold
@@ -104,8 +104,8 @@ class StockTradingEnv_EXPE(Env):
                 # Buy amount % of balance in shares
                 total_possible = self.balance / current_price
                 shares_bought = np.floor(total_possible * amount)
-                if current_date == Today:
-                    self.Buy(self.symbol, shares_bought)
+                #if current_date == Today:
+                self.Buy(self.symbol, shares_bought)
                 prev_cost = self.cost_basis * self.shares_held
                 additional_cost = shares_bought * current_price
                 self.balance -= additional_cost
@@ -115,8 +115,8 @@ class StockTradingEnv_EXPE(Env):
             elif action_type == 0:
                 # Sell amount % of shares held
                 shares_sold = np.floor(self.shares_held * amount)
-                if current_date == Today:
-                    self.Sell(self.symbol, shares_sold)
+                #if current_date == Today:
+                self.Sell(self.symbol, shares_sold)
                 self.balance += shares_sold * current_price
                 self.shares_held -= shares_sold
                 self.total_shares_sold += shares_sold
